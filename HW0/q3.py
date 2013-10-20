@@ -10,7 +10,7 @@ while True:
 		break
 
 	counter += 1
-	outFileName = "out_" + str(counter) + ".txt"
-	outfile = open(outFileName, 'w')
+	out_filename = "out_" + str(counter) + ".txt"
+	outfile = open(out_filename, 'w')
 	outfile.write(ch)
 	outfile.close()
