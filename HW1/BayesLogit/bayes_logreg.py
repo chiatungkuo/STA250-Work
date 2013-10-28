@@ -1,10 +1,10 @@
 import numpy as np
 
 """ Perform Metropolis within Gibbs sampling on the Bayesian logistic regression model
-        y = binom(m, logit(x'beta)) where logit is the logistic function and
+        y = binom(m, logit(x' * beta)) where logit is the logistic function and
         beta = multivariate_normal(beta_0, Sigma_0).
     Inputs: 
-        y, m: array_like of shapes (n) where n is number of observations
+        y, m: array_like of shape (n) where n is number of observations
         X: array_like of shape (n, p) where p is number of parameters (covariates)
         beta_0: array_like of shape (p)
         Sigma_0_inv: array_like of shape (p, p)
