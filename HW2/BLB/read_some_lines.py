@@ -1,5 +1,6 @@
 import csv
 import sys
+import numpy as np
 
 ## 
 #    filename: name of csv file
@@ -10,7 +11,7 @@ import sys
 #     verbose: True/False, level of verbosity
 ##
 
-def read_some_lines_csv(filename,indices,nr,nc,print_every=1000,verbose=False):
+def read_some_lines_csv(filename,indices,nr,nc,n,print_every=1000,verbose=False):
 	# Storage:
 	subset = np.empty(nr*nc)
 	subset.shape = (nr,nc)
@@ -38,8 +39,8 @@ def read_some_lines_csv(filename,indices,nr,nc,print_every=1000,verbose=False):
 			# Increment row counter:
 			row_num += 1
 			# Print progress?
-			if verbose and ((row_num % print_every) == 0):
-				print "Finished row " + str(row_num) + " (sampled " + str(sampled_so_far) + "/" + str(b) + " rows so far)"
+			# if verbose and ((row_num % print_every) == 0):
+			# 	print "Finished row " + str(row_num) + " (sampled " + str(sampled_so_far) + "/" + str(b) + " rows so far)"
 	return subset
 
 
