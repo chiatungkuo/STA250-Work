@@ -28,23 +28,23 @@ def bayes_logreg(m, y, X, beta_0, Sigma_0_inv, niter=10000, burnin=1000, print_e
     
     stdevs = np.ones(p)
     accept_counts = np.zeros(p)
-    d = -1
 
     # Metropolis with Gibbs
     for t in xrange(1, niter+burnin):
-        d = (d+1) % p # work on dimension d in this iteration
-        # generate new proposal with Gaussian
         beta_new = np.array(samples[t-1, :])
-        beta_new[d] = np.random.normal(samples[t-1, d], stdevs[d])
-        alpha = log_post_pdf(beta_new) - log_post_pdf(samples[t-1, :])
-        if np.log(np.random.rand()) < alpha:   # accept or reject new proposal here
-            samples[t, :] = beta_new
-            accept_counts[d] += 1
-        else:
-            samples[t, :] = samples[t-1, :]
+        for d in range(p):
+            # generate new proposal with Gaussian
+            beta_new_tmp = np.array(beta_new)
+            beta_new_tmp[d] = np.random.normal(beta_new[d], stdevs[d])
+            alpha = log_post_pdf(beta_new_tmp) - log_post_pdf(beta_new)
+            if np.log(np.random.rand()) < alpha:   # accept or reject new proposal here
+                beta_new[d] = beta_new_tmp[d]
+                accept_counts[d] += 1
+                
+        samples[t, :] = beta_new
 
         # retune the standard deviation of the corresponding proposal to adjust accept rates    
-        if t <= burnin and t % (p*retune) == 0:
+        if t <= burnin and t % retune == 0:
             accept_rates = accept_counts/retune
             if verbose: 
                 print 'Accept rates for the past ', p*retune, 'iterations are', accept_rates
@@ -56,7 +56,7 @@ def bayes_logreg(m, y, X, beta_0, Sigma_0_inv, niter=10000, burnin=1000, print_e
             accept_counts = np.zeros(p)
 
         # print update info every 'print_every' iterations
-        if (t+1) % print_every == 0:
+        if (t+1) % print_every == 0 and verbose:
             print t+1, 'iterations just finished.'
 
     return samples[burnin:, :]
